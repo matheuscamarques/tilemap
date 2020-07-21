@@ -67,29 +67,15 @@ var Elementos = [];
 
 
 function setup(){
+    const blocos = [BlocoPreto, BlocoAzul, BlocoAmarelo, BlocoVermelho];
+    
     createCanvas(1280, 720);
 
     for (let i = 0; i < maps.length; i++) {
-        for(let j=0;j< maps[i].length;j++){
-
-            if(maps[i][j] == 1){
-                Elementos.push(new BlocoAzul(j*50,i*50)); 
-            }
-            if(maps[i][j] == 2){
-                Elementos.push(new BlocoAmarelo(j*50,i*50)); 
-            }
-            if(maps[i][j] == 3){
-                Elementos.push(new BlocoVermelho(j*50,i*50)); 
-            }
-            if(maps[i][j] == 0){
-                Elementos.push(new BlocoPreto(j*50,i*50)); 
-            }
-
+        for(let j=0;j< maps[i].length;j++) {
+            Elementos.push(new blocos[maps[i][j]](j*50,i*50));
         }
-        
     }
-
-
 }
 
 function draw(){
