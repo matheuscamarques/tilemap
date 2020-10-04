@@ -2,10 +2,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+  <script src="/socket.io/socket.io.js"></script>
+  
   <!-- PLEASE NO CHANGES BELOW THIS LINE (UNTIL I SAY SO) -->
-  <script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
-  <script language="javascript" type="text/javascript" src="p5.js"></script>
+  <script src =  
+"https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js" > 
+        </script> 
+  <script language="javascript" type="text/javascript" src="/libraries/p5.min.js"></script>
+  <script language="javascript" type="text/javascript" src="/p5_js.js"></script>
+  
   <!-- OK, YOU CAN MAKE CHANGES BELOW THIS LINE AGAIN -->
 
   <!-- This line removes any default padding and style.
@@ -16,3 +21,39 @@
 <body>
 </body>
 </html>
+<script>
+
+setTimeout(
+  ()=>{
+    socket.emit('start',jogador)
+    socket.on('receivedMessage',(data)=>{
+        if(data.id != jogador.id){
+            if(players.length){
+                var achou = 0;
+                for(let i=0;i<players.length;i++){
+                      //console.log(players[i].id == data.id);
+                     if(players[i].id == data.id){
+                        achou = 1;
+                         players[i] = data
+                     }
+                }
+                if(!achou){
+                  players.push(data);
+                }
+            }else{
+              players.push(data);
+            }
+        }          
+    })
+
+    setInterval( ()=>{socket.emit('sendMessage',jogador)
+      },100);
+  },
+  300
+);
+
+
+
+
+
+</script>
