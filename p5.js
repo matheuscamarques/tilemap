@@ -69,7 +69,7 @@ var Elementos = [];
 function setup(){
     const blocos = [BlocoPreto, BlocoAzul, BlocoAmarelo, BlocoVermelho];
     
-    createCanvas(1280, 720);
+    createCanvas(800, 800);
 
     for (let i = 0; i < maps.length; i++) {
         for(let j=0;j< maps[i].length;j++) {
