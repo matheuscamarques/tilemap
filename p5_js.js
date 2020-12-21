@@ -1,5 +1,10 @@
 const TAMANHO_TILE = 50;
 var socket = io()
+let img;
+function preload() {
+    img = loadImage('./tiles/tiles.png');
+}
+
 class ElementoMapa{
 
     constructor(posx,posy,cor,tam){
@@ -10,8 +15,18 @@ class ElementoMapa{
 
 
         this.draw = function(){
-            fill(this.cor);
-            square( this.x * this.tam , this.y * this.tam, this.tam );
+            //fill(this.cor);
+            image(img, 
+                this.x * this.tam ,
+                 this.y * this.tam,
+                 50,
+                 50,
+                 32,
+                 0,
+                 16,
+                 16
+                 );
+            //square( this.x * this.tam , this.y * this.tam, this.tam );
         }
 
     }
