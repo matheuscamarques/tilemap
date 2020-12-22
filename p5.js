@@ -1,4 +1,7 @@
 //MAPA DE BLOCOS
+function preload() {
+    img = loadImage('tiles/tiles.png');
+}
 
 class ElementoMapa{
 
@@ -10,8 +13,11 @@ class ElementoMapa{
 
 
         this.draw = function(){
-            fill(this.cor);
-            square(this.x,this.y,this.tam);
+            //fill(this.cor);
+            //noFill();
+            Image(img,0,0);
+            //square(this.x,this.y,this.tam);
+            rect(0,0,this.tam,this.tam);
         }
 
     }

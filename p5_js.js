@@ -1,5 +1,11 @@
-const TAMANHO_TILE = 50;
+const TAMANHO_TILE = 1280/25;
+const VEL = 1;
 var socket = io()
+let img;
+function preload() {
+    img = loadImage('./tiles/tiles.png');
+}
+
 class ElementoMapa{
 
     constructor(posx,posy,cor,tam){
@@ -11,9 +17,42 @@ class ElementoMapa{
 
         this.draw = function(){
             fill(this.cor);
+            
             square( this.x * this.tam , this.y * this.tam, this.tam );
         }
 
+    }
+}
+
+
+class SpriteBlock{
+    constructor(posx,posy,matrixX,matrixY){
+        this.x =posx;
+        this.y = posy;
+        this.matrixX = matrixX;
+        this.matrixY = matrixY;
+
+        this.draw = function(){
+            //fill(this.cor);
+            image(img, 
+                this.x * TAMANHO_TILE ,
+                 this.y * TAMANHO_TILE,
+                 TAMANHO_TILE,
+                 TAMANHO_TILE,
+                 16*this.matrixX,
+                 16*this.matrixY,
+                 16,
+                 16
+                 );
+            //square( this.x * this.tam , this.y * this.tam, this.tam );
+        }
+
+    }
+}
+
+class Wall extends SpriteBlock{
+    constructor(x,y){
+        super(x,y,1,1);
     }
 }
 
@@ -55,10 +94,10 @@ class Player extends BlocoVermelho{
     }
 
     move(tecla){
-        if ( tecla==UP_ARROW    && this.canMove(this.x, this.y-1) ) this.y--;
-        if ( tecla==DOWN_ARROW  && this.canMove(this.x, this.y+1) ) this.y++;
-        if ( tecla==LEFT_ARROW  && this.canMove(this.x-1, this.y) ) this.x--;
-        if ( tecla==RIGHT_ARROW && this.canMove(this.x+1, this.y) ) this.x++;
+        if ( tecla==UP_ARROW    && this.canMove(this.x, this.y-VEL) ) this.y-= VEL;
+        if ( tecla==DOWN_ARROW  && this.canMove(this.x, this.y+VEL) ) this.y+= VEL;
+        if ( tecla==LEFT_ARROW  && this.canMove(this.x-VEL, this.y) ) this.x-= VEL;
+        if ( tecla==RIGHT_ARROW && this.canMove(this.x+VEL, this.y) ) this.x+= VEL;
     }
 
     update(){
@@ -66,7 +105,7 @@ class Player extends BlocoVermelho{
     }
 
     canMove(newX, newY){
-        return !maps[newY][newX] || maps[newY][newX] == 2;
+        return !maps[ Math.floor(newY) ][ Math.floor(newX)] || maps[ Math.floor(newY)][ Math.floor(newX)] == 2;
     }
 }
 
@@ -99,17 +138,16 @@ class Inimigo extends BlocoAmarelo{
 
 var maps = [
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
-    [1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1],
-    [1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1],
-    [1,0,1,1,1,1,1,0,0,1,1,1,1,1,1,1,0,0,1,1,1,1,1,0,1],
-    [1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1],
-    [1,1,1,1,1,0,1,0,0,1,1,1,2,1,1,1,0,0,1,0,1,1,1,1,1],
-    [1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],
-    [1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1],
-    [1,1,1,1,1,0,1,0,0,1,0,0,0,0,0,1,0,0,1,0,1,1,1,1,1],
-    [1,0,0,0,0,0,1,0,0,1,1,1,1,1,1,1,0,0,1,0,0,0,0,0,1],
-    [1,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,1],
-    [1,0,1,0,0,0,0,0,0,1,1,1,1,1,1,1,0,0,0,0,0,0,1,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
+    [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+    [1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1,0,1],
     [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
     [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 ];
@@ -126,11 +164,11 @@ var jogador;
 
 
 function setup(){
-    const blocos = [BlocoPreto, BlocoAzul, BlocoAmarelo, BlocoVermelho];
+    const blocos = [BlocoPreto, Wall, BlocoAmarelo, BlocoVermelho];
     jogador = new Player(parseInt(random(10)),1,7);
-    createCanvas(1280, 720);
-
-    for (let i = 0; i < maps.length; i++) {
+    createCanvas(1280, 685);
+    frameRate(30);
+        for (let i = 0; i < maps.length; i++) {
         for(let j=0;j< maps[i].length;j++) {
             elementos.push(new blocos[maps[i][j]](j,i));
         }
@@ -138,11 +176,11 @@ function setup(){
 }
 
 function draw(){
-    
+    background(0,0,0);
     for (let i = 0; i < elementos.length; i++) {
         elementos[i].draw();
     }
-
+    
     jogador.draw();
    // inimigo.draw();
    // inimigo.move();
@@ -155,10 +193,11 @@ function draw(){
         }
     }
     
-}
-
-function keyPressed(){
-    jogador.move(keyCode);
+    if(keyIsDown(keyCode)) { 
+        jogador.move(keyCode);
+    } 
     
 }
+
+
 
