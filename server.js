@@ -24,8 +24,6 @@ app.get('/tiles/tiles.png',(req,res)=>{
 var players = [];
 io.on('connection',function(socket){
     console.log(`Open socket id ${socket.id}`)
-   
-  
 
     socket.on('sendMessage',function (data) {
 
