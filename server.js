@@ -17,8 +17,9 @@ app.get('/p5_js.js',(req,res)=>{
 app.get('/client.bundle.js',(req,res)=>{
     res.sendFile(__dirname+'/client.bundle.js');
 });
-
-
+app.get('/tiles/tiles.png',(req,res)=>{
+    res.sendFile(__dirname+'/tiles/tiles.png');
+});
 var players = [];
 io.on('connection',function(socket){
     console.log(`Open socket id ${socket.id}`)
