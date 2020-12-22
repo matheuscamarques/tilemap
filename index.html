@@ -26,7 +26,8 @@
 
 setTimeout(
   ()=>{
-    socket.emit('start',jogador)
+    socket.emit('start',jogador);
+
     socket.on('receivedMessage',(data)=>{
         if(data.id != jogador.id){
             if(players.length){
@@ -48,9 +49,9 @@ setTimeout(
     })
 
     setInterval( ()=>{socket.emit('sendMessage',jogador)
-      },1);
+      },0);
   },
-  1
+  100
 );
 
 
