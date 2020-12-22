@@ -48,10 +48,11 @@ setTimeout(
         }          
     })
 
-    setInterval( ()=>{socket.emit('sendMessage',jogador)
-      },0);
+    setInterval( ()=>{
+        socket.emit('sendMessage',jogador)
+    },0);
   },
-  100
+  300
 );
 
 
